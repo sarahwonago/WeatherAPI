@@ -1,5 +1,6 @@
 import requests
 from django.conf import settings
+from django.core.cache import cache
 
 def fetch_weather_data(city):
     """
@@ -13,3 +14,20 @@ def fetch_weather_data(city):
         return response.json()
     
     return None
+
+
+def get_cached_weather_data(city):
+    """
+    Function to fetch cached data.
+    """
+
+    cached_data = cache.get(city)
+
+    if cached_data:
+        return cached_data
+    
+    weather_data = fetch_weather_data(city)
+
+    if weather_data:
+        cache.set(city, weather_data, timeout=12*60*60)
+    return weather_data
