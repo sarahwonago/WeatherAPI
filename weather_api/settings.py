@@ -29,12 +29,13 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 
-    # custom apps
-    "weather.apps.WeatherConfig",
-
     # third-party
     # REST FRAMEWORK
     "rest_framework",
+
+    # custom apps
+    "weather.apps.WeatherConfig",
+
 
 ]
 
@@ -126,13 +127,18 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 WEATHER_API_KEY = config('WEATHER_API_KEY')
 WEATHER_API_URL = config('WEATHER_API_URL')
 
+
 # redis configuration- used for caching
 CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379/1',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        },
+        'KEY_PREFIX': 'weather',  # Optional: Prefix for all cache keys
     }
 }
+
+CACHE_TTL = 12 * 60 * 60  # 12 hours
+
